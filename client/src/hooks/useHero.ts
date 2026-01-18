@@ -83,8 +83,17 @@ const useHero = () => {
       try {
         const response = await api.get<HeroSettings>("/hero");
         setHeroSettings(response.data);
-      } catch (error) {
-        console.error("Failed to fetch hero settings:", error);
+      } catch (error: any) {
+        // Only log detailed errors in development mode
+        if (import.meta.env.DEV) {
+          const isNetworkError = error.code === "ERR_NETWORK" || error.message?.includes("Network Error");
+          if (isNetworkError) {
+            console.warn("API server not reachable. Using default hero settings. Make sure the server is running on port 5000.");
+          } else {
+            console.error("Failed to fetch hero settings:", error);
+          }
+        }
+        // Hero settings already have default values, so no action needed
       } finally {
         setLoading(false);
       }

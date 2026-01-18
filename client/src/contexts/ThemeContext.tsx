@@ -187,8 +187,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       setTheme(themeData);
       applyThemeToCSS(themeData);
       setIsDark(themeData.currentMode === "dark");
-    } catch (error) {
-      console.error("Failed to fetch theme, using defaults:", error);
+    } catch (error: any) {
+      // Only log detailed errors in development mode
+      if (import.meta.env.DEV) {
+        const isNetworkError = error.code === "ERR_NETWORK" || error.message?.includes("Network Error");
+        if (isNetworkError) {
+          console.warn("API server not reachable. Using default theme. Make sure the server is running on port 5000.");
+        } else {
+          console.error("Failed to fetch theme, using defaults:", error);
+        }
+      }
       setTheme(defaultTheme);
       applyThemeToCSS(defaultTheme);
     } finally {

@@ -15,7 +15,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
-connectDB();
+// Connect to MongoDB (non-blocking - server will start regardless)
+connectDB().catch(err => {
+  console.error("Failed to connect to MongoDB:", err.message);
+});
 
 app.use(
   cors({

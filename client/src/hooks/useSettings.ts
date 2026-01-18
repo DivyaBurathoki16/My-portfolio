@@ -22,8 +22,17 @@ const useSettings = () => {
       try {
         const response = await api.get("/settings");
         setSettings(response.data);
-      } catch (error) {
-        console.error("Failed to fetch settings:", error);
+      } catch (error: any) {
+        // Only log detailed errors in development mode
+        if (import.meta.env.DEV) {
+          const isNetworkError = error.code === "ERR_NETWORK" || error.message?.includes("Network Error");
+          if (isNetworkError) {
+            console.warn("API server not reachable. Using default settings. Make sure the server is running on port 5000.");
+          } else {
+            console.error("Failed to fetch settings:", error);
+          }
+        }
+        // Settings already have default values, so no action needed
       } finally {
         setLoading(false);
       }

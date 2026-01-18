@@ -33,7 +33,30 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
       // Password is correct
       onLogin(password);
     } catch (err: any) {
-      setError(err.response?.data?.error || "Invalid password. Please try again.");
+      // Show detailed error message from server
+      let errorMessage = "Invalid password. Please try again.";
+      
+      if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.code === "ERR_NETWORK" || err.message?.includes("Network Error")) {
+        errorMessage = "Cannot connect to server. Please make sure the server is running on port 5000.";
+      } else if (err.response?.status === 401) {
+        errorMessage = "Invalid password. Please check your admin password.";
+      } else if (err.response?.status === 500) {
+        errorMessage = err.response?.data?.error || "Server error. Please check if ADMIN_PASSWORD is configured.";
+      }
+      
+      setError(errorMessage);
+      
+      // Log detailed error in development
+      if (import.meta.env.DEV) {
+        console.error("Login error:", {
+          status: err.response?.status,
+          error: err.response?.data?.error,
+          message: err.message,
+          code: err.code
+        });
+      }
     } finally {
       setLoading(false);
     }

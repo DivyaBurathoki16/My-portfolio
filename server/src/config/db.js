@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI?.trim();
 
   if (!uri) {
-    console.warn("MONGODB_URI is not set. Contact form submissions will not persist.");
+    console.warn("⚠️  MONGODB_URI is not set in .env file.");
+    console.warn("   The server will work, but:");
+    console.warn("   - Contact form submissions will not be saved to database");
+    console.warn("   - Settings, theme, and hero data will use defaults");
+    console.warn("   - Projects will use fallback data from data/projects.js");
+    console.warn("");
     return;
   }
 
