@@ -60,7 +60,7 @@ const Contact = () => {
           transition={{ delay: 0.3 }}
         >
           Name
-          <input name="name" required placeholder="Jane Doe" value={form.name} onChange={handleChange} />
+          <input name="name" required placeholder="Your Name" value={form.name} onChange={handleChange} />
         </motion.label>
         <motion.label
           initial={{ opacity: 0, x: -20 }}
@@ -73,7 +73,7 @@ const Contact = () => {
             name="email"
             type="email"
             required
-            placeholder="jane@email.com"
+            placeholder="abc@email.com"
             value={form.email}
             onChange={handleChange}
           />
@@ -85,7 +85,7 @@ const Contact = () => {
           transition={{ delay: 0.5 }}
         >
           Company / Team
-          <input name="company" placeholder="LPO Holidays" value={form.company} onChange={handleChange} />
+          <input name="company" placeholder="xyz company " value={form.company} onChange={handleChange} />
         </motion.label>
         <motion.label
           className="full-width"

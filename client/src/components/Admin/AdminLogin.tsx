@@ -39,7 +39,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
       if (err.response?.data?.error) {
         errorMessage = err.response.data.error;
       } else if (err.code === "ERR_NETWORK" || err.message?.includes("Network Error")) {
-        errorMessage = "Cannot connect to server. Please make sure the server is running on port 5000.";
+        errorMessage = "Cannot connect to server. Please check your VITE_API_URL configuration.";
       } else if (err.response?.status === 401) {
         errorMessage = "Invalid password. Please check your admin password.";
       } else if (err.response?.status === 500) {

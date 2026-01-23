@@ -88,7 +88,7 @@ const useHero = () => {
         if (import.meta.env.DEV) {
           const isNetworkError = error.code === "ERR_NETWORK" || error.message?.includes("Network Error");
           if (isNetworkError) {
-            console.warn("API server not reachable. Using default hero settings. Make sure the server is running on port 5000.");
+            console.warn("API server not reachable. Using default hero settings. Please check your VITE_API_URL configuration.");
           } else {
             console.error("Failed to fetch hero settings:", error);
           }

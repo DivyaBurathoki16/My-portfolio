@@ -757,6 +757,10 @@ main {
   margin-top: 2rem;
 }
 
+.contact-form .full-width {
+  grid-column: 1 / -1;
+}
+
 .contact-form label {
   display: flex;
   flex-direction: column;
