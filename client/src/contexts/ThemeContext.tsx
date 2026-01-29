@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
 import api from "../services/api";
 
 export interface ThemeSettings {
@@ -111,10 +111,6 @@ const getLightTextColor = (): string => {
   return "#e2e8f0"; // Light gray for dark mode
 };
 
-// Helper function to get dark text color for light backgrounds
-const getDarkTextColor = (): string => {
-  return "#0f172a"; // Dark gray for light mode
-};
 
 // Apply theme to CSS variables
 const applyThemeToCSS = (theme: ThemeSettings) => {

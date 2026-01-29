@@ -26,6 +26,9 @@ interface Project {
   order?: number;
 }
 
+// Form data type for creating/editing projects (without _id for new projects)
+type ProjectFormData = Omit<Project, '_id'> & { _id?: string };
+
 interface AdminDashboardProps {
   adminPassword: string;
   onLogout: () => void;
@@ -39,7 +42,7 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [formData, setFormData] = useState<Project>({
+  const [formData, setFormData] = useState<ProjectFormData>({
     title: "",
     description: "",
     tech: [],
@@ -129,6 +132,7 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
   const handleEdit = (project: Project) => {
     setEditingProject(project);
     setFormData({
+      _id: project._id,
       title: project.title,
       description: project.description,
       tech: project.tech,

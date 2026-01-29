@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
-import useProjects from "../hooks/useProjects.ts";
+import useProjects, { type Project as ProjectType } from "../hooks/useProjects.ts";
 import ProjectModal from "./ProjectModal.tsx";
 
-interface Project {
+// Extended Project type that includes both id and _id for compatibility
+interface Project extends ProjectType {
   _id?: string;
-  id?: string;
-  title: string;
-  description: string;
-  tech: string[];
-  github?: string;
-  live?: string;
-  image?: string;
 }
 
 const Projects = () => {
@@ -45,7 +39,7 @@ const Projects = () => {
         <div className="project-grid">
           {projects.map((project, index) => (
             <motion.article
-              key={project._id || project.id}
+              key={project.id || project._id || `project-${index}`}
               className="project-card"
               onClick={() => handleProjectClick(project)}
               initial={{ opacity: 0, y: 30 }}

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiPlus, FiX, FiTrash2 } from "react-icons/fi";
+import { FiPlus, FiX } from "react-icons/fi";
 import api from "../../services/api";
-import type { HeroSettings, HeroSkill, HeroFeature, HeroStat, HeroQuickLink } from "../../hooks/useHero";
+import type { HeroSettings } from "../../hooks/useHero";
 
 interface HeroEditorProps {
   adminPassword: string;
