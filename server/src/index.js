@@ -121,7 +121,13 @@ app.use("/api/track-view", require("./routes/trackView"));
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Portfolio API running on port ${PORT}`);
-});
+// Export for Vercel serverless functions
+module.exports = app;
+
+// Start server locally if not in Vercel environment
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`Portfolio API running on port ${PORT}`);
+  });
+}
 

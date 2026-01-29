@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FiGithub, FiLinkedin, FiMoon, FiSun, FiSettings } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiGithub, FiLinkedin, FiMoon, FiSun, FiSettings, FiMenu, FiX } from "react-icons/fi";
 import { useTheme } from "../contexts/ThemeContext.tsx";
 import useSettings from "../hooks/useSettings.ts";
 
@@ -16,6 +16,7 @@ type NavbarProps = {
 
 const Navbar = ({ sections }: NavbarProps) => {
   const [active, setActive] = useState("home");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isDark, toggleTheme, theme } = useTheme();
   const location = useLocation();
   const { settings } = useSettings();
@@ -37,9 +38,31 @@ const Navbar = ({ sections }: NavbarProps) => {
     return () => window.removeEventListener("scroll", listener);
   }, [sections]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (isMobileMenuOpen && !target.closest('.navbar') && !target.closest('.mobile-nav')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     el?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -57,7 +80,7 @@ const Navbar = ({ sections }: NavbarProps) => {
       >
         Divya Burathoki
       </motion.div>
-      <nav>
+      <nav className="desktop-nav">
         {sections.map((section) => (
           <motion.button
             key={section.id}
@@ -79,6 +102,43 @@ const Navbar = ({ sections }: NavbarProps) => {
           </motion.button>
         ))}
       </nav>
+      <button
+        className="mobile-menu-toggle"
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        aria-label="Toggle menu"
+      >
+        {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+      </button>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.nav
+            className="mobile-nav"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {sections.map((section) => (
+              <motion.button
+                key={section.id}
+                className={active === section.id ? "active" : ""}
+                onClick={() => scrollTo(section.id)}
+                whileTap={{ scale: 0.95 }}
+              >
+                {section.label}
+                {active === section.id && (
+                  <motion.div
+                    className="active-indicator"
+                    layoutId="activeSectionMobile"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </motion.button>
+            ))}
+          </motion.nav>
+        )}
+      </AnimatePresence>
       <div className="navbar-actions">
         {location.pathname === "/" && (
           <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
