@@ -70,7 +70,7 @@ const AdminMessages = ({ adminPassword }: AdminMessagesProps) => {
 
     try {
       console.log("Deleting message:", deleteConfirm.messageId);
-      const response = await api.delete(`/admin/messages/${deleteConfirm.messageId}`, {
+      const response = await api.delete(`/api/admin/messages/${deleteConfirm.messageId}`, {
         headers: { "x-admin-password": adminPassword }
       });
       console.log("Delete successful:", response);
