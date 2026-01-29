@@ -43,7 +43,7 @@ const AdminMessages = ({ adminPassword }: AdminMessagesProps) => {
   const fetchMessages = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/admin/messages", {
+      const response = await api.get("/api/admin/messages", {
         headers: { "x-admin-password": adminPassword }
       });
       setMessages(response.data);
@@ -110,7 +110,7 @@ const AdminMessages = ({ adminPassword }: AdminMessagesProps) => {
 
     try {
       setSendingReply(true);
-      await api.post(`/admin/messages/${replyModal.message._id}/reply`, {
+      await api.post(`/api/admin/messages/${replyModal.message._id}/reply`, {
         subject: replyForm.subject,
         message: replyForm.message
       }, {

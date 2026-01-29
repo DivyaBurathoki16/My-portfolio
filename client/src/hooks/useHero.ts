@@ -81,7 +81,7 @@ const useHero = () => {
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const response = await api.get<HeroSettings>("/hero");
+        const response = await api.get<HeroSettings>("/api/hero");
         setHeroSettings(response.data);
       } catch (error: any) {
         // Only log detailed errors in development mode

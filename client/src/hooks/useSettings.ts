@@ -20,7 +20,7 @@ const useSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await api.get("/settings");
+        const response = await api.get("/api/settings");
         setSettings(response.data);
       } catch (error: any) {
         // Only log detailed errors in development mode

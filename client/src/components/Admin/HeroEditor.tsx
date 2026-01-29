@@ -50,7 +50,7 @@ const HeroEditor = ({ adminPassword }: HeroEditorProps) => {
   const fetchHero = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/hero");
+      const response = await api.get("/api/hero");
       setHeroSettings(response.data);
     } catch (err: any) {
       setError(err.response?.data?.error || "Failed to fetch hero settings");
@@ -66,7 +66,7 @@ const HeroEditor = ({ adminPassword }: HeroEditorProps) => {
     setSaving(true);
 
     try {
-      await api.put("/admin/hero", heroSettings, {
+      await api.put("/api/admin/hero", heroSettings, {
         headers: { "x-admin-password": adminPassword }
       });
       setSuccess("Hero section updated successfully!");

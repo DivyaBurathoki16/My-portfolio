@@ -81,7 +81,7 @@ const AdminAnalytics = ({ adminPassword }: AdminAnalyticsProps) => {
   const fetchAnalytics = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/admin/analytics", {
+      const response = await api.get("/api/admin/analytics", {
         headers: { "x-admin-password": adminPassword }
       });
       setAnalytics(response.data);
@@ -94,7 +94,7 @@ const AdminAnalytics = ({ adminPassword }: AdminAnalyticsProps) => {
 
   const fetchProjects = async () => {
     try {
-      const response = await api.get("/projects");
+      const response = await api.get("/api/projects");
       setProjects(response.data);
     } catch (err) {
       console.error("Failed to fetch projects:", err);

@@ -178,7 +178,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const fetchTheme = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/theme");
+      const response = await api.get("/api/theme");
       const themeData = response.data as ThemeSettings;
       setTheme(themeData);
       applyThemeToCSS(themeData);

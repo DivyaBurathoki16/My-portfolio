@@ -5,7 +5,7 @@ export const trackProjectView = async (projectId: string) => {
   try {
     const visitorId = getVisitorId();
     
-    await api.post("/track-view", {
+    await api.post("/api/track-view", {
       projectId,
       visitorId
     });

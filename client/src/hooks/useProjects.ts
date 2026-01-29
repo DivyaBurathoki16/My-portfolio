@@ -21,7 +21,7 @@ const useProjects = () => {
     let mounted = true;
     const fetchProjects = async () => {
       try {
-        const { data } = await api.get<Project[]>("/projects");
+        const { data } = await api.get<Project[]>("/api/projects");
         if (mounted) {
           setProjects(data);
         }

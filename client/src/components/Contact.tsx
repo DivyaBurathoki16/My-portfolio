@@ -24,7 +24,7 @@ const Contact = () => {
     evt.preventDefault();
     setStatus({ state: "loading", message: "Sending…" });
     try {
-      const { data } = await api.post("/contact", form);
+      const { data } = await api.post("/api/contact", form);
       setStatus({ state: "success", message: data.message ?? "Message sent!" });
       setForm({ name: "", email: "", company: "", message: "" });
     } catch (error: unknown) {

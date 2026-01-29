@@ -70,7 +70,7 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
   const fetchProjects = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/admin/projects", {
+      const response = await api.get("/api/admin/projects", {
         headers: { "x-admin-password": adminPassword }
       });
       setProjects(response.data);
@@ -83,7 +83,7 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
 
   const fetchUnreadMessagesCount = async () => {
     try {
-      const response = await api.get("/admin/messages", {
+      const response = await api.get("/api/admin/messages", {
         headers: { "x-admin-password": adminPassword }
       });
 
@@ -112,12 +112,12 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
 
     try {
       if (editingProject?._id) {
-        await api.put(`/admin/projects/${editingProject._id}`, formData, {
+        await api.put(`/api/admin/projects/${editingProject._id}`, formData, {
           headers: { "x-admin-password": adminPassword }
         });
         setSuccess("Project updated successfully!");
       } else {
-        await api.post("/admin/projects", formData, {
+        await api.post("/api/admin/projects", formData, {
           headers: { "x-admin-password": adminPassword }
         });
         setSuccess("Project created successfully!");
@@ -163,7 +163,7 @@ const AdminDashboard = ({ adminPassword, onLogout }: AdminDashboardProps) => {
 
     try {
       console.log("Deleting project:", deleteConfirm.projectId);
-      const response = await api.delete(`/admin/projects/${encodeURIComponent(deleteConfirm.projectId)}`, {
+      const response = await api.delete(`/api/admin/projects/${encodeURIComponent(deleteConfirm.projectId)}`, {
         headers: { "x-admin-password": adminPassword }
       });
       console.log("Delete successful:", response);

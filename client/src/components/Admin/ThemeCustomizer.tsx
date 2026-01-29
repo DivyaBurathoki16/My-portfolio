@@ -84,7 +84,7 @@ const ThemeCustomizer = ({ adminPassword }: ThemeCustomizerProps) => {
       setSuccess("");
 
       await api.put(
-        "/theme",
+        "/api/theme",
         localTheme,
         {
           headers: { "x-admin-password": adminPassword }

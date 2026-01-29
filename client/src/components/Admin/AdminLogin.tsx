@@ -27,7 +27,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
 
     // Verify password by trying to fetch projects
     try {
-      await api.get("/admin/projects", {
+      await api.get("/api/admin/projects", {
         headers: { "x-admin-password": password }
       });
       // Password is correct

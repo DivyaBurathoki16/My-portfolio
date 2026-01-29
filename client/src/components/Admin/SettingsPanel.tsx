@@ -33,7 +33,7 @@ const SettingsPanel = ({ adminPassword }: SettingsPanelProps) => {
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/settings");
+      const response = await api.get("/api/settings");
       setSettings(response.data);
     } catch (err: any) {
       setError(err.response?.data?.error || "Failed to fetch settings");
@@ -49,7 +49,7 @@ const SettingsPanel = ({ adminPassword }: SettingsPanelProps) => {
     setSaving(true);
 
     try {
-      await api.put("/settings", settings, {
+      await api.put("/api/settings", settings, {
         headers: { "x-admin-password": adminPassword }
       });
       setSuccess("Settings updated successfully!");
