@@ -13,16 +13,44 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
 // Connect to MongoDB (non-blocking - server will start regardless)
 connectDB().catch(err => {
   console.error("Failed to connect to MongoDB:", err.message);
 });
 
+// CORS configuration - allow localhost and Vercel deployments
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://my-portfolio-5s74-mflywnabb-divyaburathoki16-gmailcoms-projects.vercel.app",
+  // Add your production frontend URL here or use CLIENT_ORIGIN env variable
+  ...(process.env.CLIENT_ORIGIN ? [process.env.CLIENT_ORIGIN] : [])
+];
+
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+      
+      // Check if origin is in allowed list
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      
+      // Allow any Vercel preview/production URL (for flexibility)
+      if (origin.includes('.vercel.app') || origin.includes('.vercel.app/')) {
+        callback(null, true);
+        return;
+      }
+      
+      callback(new Error("CORS blocked: Origin not allowed"));
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: false
   })
