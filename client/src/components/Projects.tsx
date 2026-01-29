@@ -37,11 +37,14 @@ const Projects = () => {
         {error && <p className="status error">{error}</p>}
 
         <div className="project-grid">
-          {projects.map((project, index) => (
+          {projects.map((project, index) => {
+            const projectWithId = project as Project;
+            const projectId = projectWithId.id || projectWithId._id || `project-${index}`;
+            return (
             <motion.article
-              key={project.id || project._id || `project-${index}`}
+              key={projectId}
               className="project-card"
-              onClick={() => handleProjectClick(project)}
+              onClick={() => handleProjectClick(projectWithId)}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -50,8 +53,8 @@ const Projects = () => {
             >
               <div className="project-media">
                 <motion.img
-                  src={project.image || "https://via.placeholder.com/400x300"}
-                  alt={project.title}
+                  src={projectWithId.image || "https://via.placeholder.com/400x300"}
+                  alt={projectWithId.title}
                   loading="lazy"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.5 }}
@@ -65,15 +68,15 @@ const Projects = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.1 + 0.2 }}
                   >
-                    {project.tech?.join(" • ") || "Tech Stack"}
+                    {projectWithId.tech?.join(" • ") || "Tech Stack"}
                   </motion.p>
-                  <h3>{project.title}</h3>
-                  <p>{project.description}</p>
+                  <h3>{projectWithId.title}</h3>
+                  <p>{projectWithId.description}</p>
                 </div>
                 <div className="project-links">
-                  {project.live && (
+                  {projectWithId.live && (
                     <motion.a
-                      href={project.live}
+                      href={projectWithId.live}
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
@@ -83,9 +86,9 @@ const Projects = () => {
                       Live demo <FiArrowUpRight />
                     </motion.a>
                   )}
-                  {project.github && (
+                  {projectWithId.github && (
                     <motion.a
-                      href={project.github}
+                      href={projectWithId.github}
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
@@ -95,13 +98,14 @@ const Projects = () => {
                       GitHub <FiArrowUpRight />
                     </motion.a>
                   )}
-                  {!project.live && !project.github && (
+                  {!projectWithId.live && !projectWithId.github && (
                     <span className="project-link-placeholder">Click to view details</span>
                   )}
                 </div>
               </div>
             </motion.article>
-          ))}
+            );
+          })}
         </div>
       </section>
 

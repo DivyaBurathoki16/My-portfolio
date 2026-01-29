@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../services/api.ts";
 
 export type Project = {
-  id: string;
+  id?: string;
+  _id?: string;
   title: string;
   description: string;
   tech: string[];
