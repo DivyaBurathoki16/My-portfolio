@@ -34,6 +34,26 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Analytics middleware - must be before routes to track all GET requests
 app.use(analyticsLogger);
 
+// Root route - helpful info for API verification
+app.get("/", (req, res) => {
+  res.json({
+    message: "Portfolio API Server",
+    status: "running",
+    version: "1.0.0",
+    endpoints: {
+      health: "/api/health",
+      projects: "/api/projects",
+      contact: "/api/contact",
+      settings: "/api/settings",
+      theme: "/api/theme",
+      hero: "/api/hero",
+      admin: "/api/admin",
+      trackView: "/api/track-view"
+    },
+    timestamp: Date.now()
+  });
+});
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: Date.now() });
 });
