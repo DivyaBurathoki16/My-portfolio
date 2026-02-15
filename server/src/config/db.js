@@ -36,5 +36,23 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+/**
+ * Ensure MongoDB is connected. On serverless (e.g. Vercel), the connection
+ * may not be ready when the first request runs. This waits briefly for an
+ * existing connection or triggers connectDB and waits.
+ */
+const ensureConnected = async () => {
+  if (mongoose.connection.readyState === 1) return true;
+  if (process.env.MONGODB_URI?.trim()) {
+    try {
+      await connectDB();
+      return mongoose.connection.readyState === 1;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
+
+module.exports = { connectDB, ensureConnected };
 

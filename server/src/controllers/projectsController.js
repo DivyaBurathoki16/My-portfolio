@@ -1,37 +1,33 @@
 const Project = require("../models/Project");
 const { projects: defaultProjects } = require("../data/projects");
+const { ensureConnected } = require("../config/db");
 
 const getProjects = async (req, res, next) => {
   try {
-    // Try to get projects from MongoDB first (only if connected)
     if (process.env.MONGODB_URI) {
-      const mongoose = require("mongoose");
-      // Only query if mongoose is connected (readyState 1 = connected)
-      if (mongoose.connection.readyState === 1) {
+      // On serverless, connection may not be ready yet; ensure we're connected
+      const connected = await ensureConnected();
+      if (connected) {
         try {
-          // Add timeout to prevent hanging
           const dbQuery = Project.find().sort({ order: 1, createdAt: -1 }).limit(100).lean();
-          const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error("Database query timeout")), 2000)
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Database query timeout")), 5000)
           );
-          
+
           const dbProjects = await Promise.race([dbQuery, timeoutPromise]);
           if (dbProjects && dbProjects.length > 0) {
             return res.json(dbProjects);
           }
         } catch (dbError) {
-          // If database query fails or times out, fall back to default projects
           console.warn("⚠️  Database query failed, using default projects:", dbError.message);
         }
       } else {
         console.log("📦 MongoDB not connected, using default projects");
       }
     }
-    
-    // Fallback to default projects if MongoDB is not configured, not connected, or empty
+
     res.json(defaultProjects);
   } catch (error) {
-    // If anything fails, return default projects instead of error
     console.error("❌ Error fetching projects:", error.message);
     res.json(defaultProjects);
   }
